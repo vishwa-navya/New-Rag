@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
-const knowledgePath = __dirname;;
+const knowledgePath = __dirname;
 
 function loadKnowledge() {
   const knowledge = {};
@@ -163,30 +163,88 @@ app.post("/chat", async (req, res) => {
       });
     }
 
+    const lowerMessage = message.toLowerCase().trim();
+
+    const greetings = [
+      "hi", "hello", "hey", 
+      "hi vishwa", "hello vishwa", "hey vishwa", 
+      "good morning", "good afternoon", "good evening", "good night", 
+      "how are you", "how are you vishwa"
+    ];
+
+    const fallbacks = [
+      "thanks", "thank you", 
+      "ok", "okay", 
+      "bye", "see you"
+    ];
+
+    if (greetings.includes(lowerMessage)) {
+      console.log("=================================");
+      console.log(`USER: ${message}`);
+      console.log("GREETING DETECTED");
+      console.log("NO LLM CALL");
+
+      let reply = "Hi 👋 Nice to meet you!";
+
+      if (lowerMessage.includes("good morning")) reply = "Good morning ☀️ Have a wonderful day!";
+      else if (lowerMessage.includes("good afternoon")) reply = "Good afternoon ☀️ Hope you're having a great day!";
+      else if (lowerMessage.includes("good evening")) reply = "Good evening 🌆 Wishing you a pleasant evening!";
+      else if (lowerMessage.includes("good night")) reply = "Good night 🌙 Take care!";
+      else if (lowerMessage.includes("how are you")) reply = "I am doing well, thank you for asking 😊";
+      else if (lowerMessage.startsWith("hi") || lowerMessage.startsWith("hello") || lowerMessage.startsWith("hey")) {
+        reply = "Hello 👋 How are you?";
+      }
+
+      console.log("REPLY SENT");
+      console.log("==========");
+
+      return res.json({ reply });
+    }
+
+    if (fallbacks.includes(lowerMessage)) {
+      console.log("=================================");
+      console.log(`USER: ${message}`);
+      console.log("GREETING DETECTED");
+      console.log("NO LLM CALL");
+
+      let reply = "You're welcome 😊";
+      
+      if (lowerMessage === "bye" || lowerMessage === "see you") {
+        reply = "Bye 👋 Have a great day!";
+      }
+
+      console.log("REPLY SENT");
+      console.log("==========");
+
+      return res.json({ reply });
+    }
+
+    console.log("=================================");
+    console.log(`USER: ${message}`);
+
     const context = retrieveContext(message);
 
-    console.log("RAG Context Length:", context.length);
+    console.log(`RAG Context Length: ${context.length}`);
 
     const systemPrompt = `
-You are Vishwa AI.
+You ARE Vishwa Jaganathan.
 
-You ARE Vishwa.
-
-Always answer in first person.
-
-Rules:
-
-- Start answers with "I".
-- Speak as if you are Vishwa himself.
+Strict Rules:
+- Always answer in first person.
+- Start answers naturally with "I".
+- Speak like a human, not like an AI assistant.
+- Keep answers short and conversational.
+- Do not give long theoretical explanations.
+- For simple questions answer in 1–3 sentences.
+- Only provide long answers when the user explicitly asks for details.
 - Never say "According to the profile".
 - Never say "The user".
 - Never say "Vishwa is".
 - Always say "I am", "I completed", "I built", "I learned".
-
-Use ONLY the retrieved context below.
+- Use the retrieved context only.
 
 Retrieved Context:
-${context}
+ ${context}
 `;
 
     const response = await fetch(
@@ -201,6 +259,7 @@ ${context}
           model: "Llama-4-Maverick-17B-128E-Instruct",
           temperature: 0.1,
           top_p: 0.1,
+          max_tokens: 120,
           messages: [
             {
               role: "system",
@@ -218,6 +277,10 @@ ${context}
     const data = await response.json();
 
     if (data?.error?.type === "rate_limit_exceeded") {
+      console.log("RATE LIMIT DETECTED");
+      console.log("REPLY SENT");
+      console.log("==========");
+      
       return res.json({
         reply:
           "I am currently receiving too many requests. Please try again after some time."
@@ -228,12 +291,19 @@ ${context}
       data?.choices?.[0]?.message?.content ||
       "I couldn't find an answer right now.";
 
+    console.log("SAMBANOVA CALLED");
+    console.log("REPLY SENT");
+    console.log("==========");
+
     res.json({
       reply
     });
 
   } catch (error) {
-    console.error(error);
+    console.log("=================================");
+    console.log("ERROR DETECTED");
+    console.log(`ERROR MESSAGE: ${error.message}`);
+    console.log("==================");
 
     res.status(500).json({
       reply: "I am facing a temporary issue. Please try again."
