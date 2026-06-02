@@ -10,8 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
-
-const knowledgePath = path.join(__dirname, "knowledge");
+const knowledgePath = __dirname;;
 
 function loadKnowledge() {
   const knowledge = {};
