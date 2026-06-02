@@ -1,0 +1,12 @@
+{
+  "hobbies": {
+    "cricket": {
+      "favorite_format": "Test Cricket",
+      "reason": "It tests patience, discipline, and decision-making."
+    },
+    "reading": {
+      "favorite_subject": "Mahabharata",
+      "reason": "The teachings and wisdom help with peaceful decision-making and personal growth."
+    }
+  }
+}

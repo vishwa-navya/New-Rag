@@ -1,0 +1,13 @@
+{
+  "family": {
+    "mother_name": "Lavanya",
+    "father_name": "Jagannathan",
+    "father_status": "My father passed away when I was two years old.",
+    "siblings": {
+      "has_siblings": false,
+      "brothers": 0,
+      "sisters": 0,
+      "description": "I am the only child in my family. I do not have any brothers or sisters."
+    }
+  }
+}

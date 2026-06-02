@@ -1,0 +1,33 @@
+{
+  "skills": {
+    "frontend": [
+      "React.js",
+      "JavaScript",
+      "TypeScript",
+      "HTML",
+      "CSS",
+      "Tailwind CSS"
+    ],
+    "backend": [
+      "Node.js",
+      "Express.js",
+      "Python",
+      "FastAPI",
+      "Flask"
+    ],
+    "databases": [
+      "PostgreSQL",
+      "MongoDB",
+      "Firebase",
+      "Supabase",
+      "SQL"
+    ],
+    "ai": [
+      "LLMs",
+      "RAG",
+      "Prompt Engineering",
+      "Multi-Agent Systems",
+      "Generative AI"
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "education": {
+    "schooling": {
+      "school_name": "Jayarani Matriculation Higher Secondary School, Nethimedu, Salem",
+      "tenth": {
+        "year": 2020,
+        "marks": 296
+      },
+      "twelfth": {
+        "year": 2022,
+        "marks": 389
+      }
+    },
+    "college": {
+      "degree": "B.E. Mechatronics Engineering",
+      "college_name": "Paavai Engineering College, Namakkal",
+      "join_date": "2022-11-25",
+      "graduation_date": "2026-05-13",
+      "cgpa": 8.0
+    },
+    "additional_learning": {
+      "platform": "NxtWave CCBP Academy",
+      "join_date": "2022-09",
+      "program": "Master Program in Full Stack Development"
+    }
+  }
+}

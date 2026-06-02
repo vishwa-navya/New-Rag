@@ -1,0 +1,20 @@
+{
+  "projects": [
+    {
+      "name": "DEVA AI",
+      "description": "Spiritual AI platform with 25+ deity agents powered by LLMs and RAG."
+    },
+    {
+      "name": "SecureChat",
+      "description": "AI-enhanced real-time chat application."
+    },
+    {
+      "name": "AstroXI",
+      "description": "AI-powered IPL fantasy team picker."
+    },
+    {
+      "name": "Mahabharata Chronicles",
+      "description": "Interactive AI quiz and learning platform."
+    }
+  ]
+}

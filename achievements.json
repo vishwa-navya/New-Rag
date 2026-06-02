@@ -1,0 +1,17 @@
+{
+  "achievements": [
+    {
+      "title": "National Level Science Exhibition",
+      "level": "National",
+      "prize": "Second Prize",
+      "project": "Awareness Line System for Fishermen",
+      "description": "Designed a border-awareness solution to help fishermen avoid crossing international sea boundaries."
+    },
+    {
+      "title": "EDII Hackathon Finalist",
+      "year": 2024,
+      "details": "Selected among approximately 60 finalists from more than 8500 submitted ideas.",
+      "award": "INR 10,000 cash prize and certificate from the Honourable MSME Minister"
+    }
+  ]
+}

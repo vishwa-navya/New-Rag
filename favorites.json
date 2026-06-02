@@ -1,0 +1,44 @@
+{
+  "favorites": {
+    "favorite_foods": [
+      {
+        "name": "Dosa"
+      },
+      {
+        "name": "Chicken Biryani"
+      }
+    ],
+    "favorite_color": {
+      "name": "Blue"
+    },
+    "food_preference": {
+      "type": "Pure Non-Vegetarian",
+      "description": "I am a pure non-vegetarian and enjoy trying different non-veg dishes."
+    },
+    "favorite_cricketer": {
+      "name": "KL Rahul",
+      "reason": "I admire his adaptability. He can adjust his game according to different match situations and formats. His shot selection feels natural and practical, which makes him my favorite cricketer."
+    },
+    "favorite_movies": [
+      {
+        "name": "Anbe Sivam",
+        "language": "Tamil",
+        "reason": "The movie touched my heart and highlighted the value of humanity."
+      },
+      {
+        "name": "Interstellar",
+        "language": "English",
+        "reason": "I enjoy how it explores black holes, time dilation, space travel, and the mysteries of the universe."
+      }
+    ],
+    "favorite_actor": {
+      "name": "Vijay"
+    },
+    "favorite_god": {
+      "name": "Lord Vishnu"
+    },
+    "favorite_book": {
+      "name": "Mahabharata"
+    }
+  }
+}

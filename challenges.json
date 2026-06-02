@@ -1,0 +1,20 @@
+{
+  "challenges": {
+    "technical_challenges": [
+      {
+        "title": "Low Memory Android Camera Crash",
+        "summary": "Solved image upload crashes on low-memory Android devices by implementing streaming camera capture, smart image decoding, and device-adaptive optimizations."
+      }
+    ],
+    "non_technical_challenges": [
+      {
+        "title": "Transition from Mechatronics to Software Development",
+        "summary": "Despite not getting a CSE or IT seat due to low cutoff marks, pursued NxtWave Full Stack Development alongside college for four years and built strong software engineering skills."
+      }
+    ],
+    "detailed_responses": {
+      "technical": "I faced a critical issue in my SecureChat app where image uploads were crashing on low-memory Android devices with 4GB RAM. The app would freeze or crash when users tried to capture or upload photos. After debugging, I identified the root cause as loading full-resolution images directly into memory. I solved this by implementing streaming camera capture, smart image decoding with BitmapFactory options to downsample images, and device-adaptive optimizations that detect available memory and adjust image quality accordingly. This completely eliminated the crash.",
+      "non_technical": "I faced a significant challenge during my college admission. Due to my lower cutoff marks, I was unable to get a CSE or IT seat. I joined Mechatronics and simultaneously pursued NxtWave's Full Stack Development program. For four years, I balanced both college studies and software development training, which helped me become a strong developer."
+    }
+  }
+}
