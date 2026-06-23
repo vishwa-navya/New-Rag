@@ -13,7 +13,16 @@ const PORT = process.env.PORT || 3000;
 const knowledgePath = __dirname;
 
 // ============================================================
-// DEFENSE #5 — Rate Limiting (stops spam & brute-force probing)
+// CACHE — stores question → answer to avoid repeated LLM calls
+// ============================================================
+const answerCache = new Map();
+
+function normalizeQuestion(q) {
+  return q.toLowerCase().trim().replace(/[^a-z0-9\s]/g, "").replace(/\s+/g, " ");
+}
+
+// ============================================================
+// DEFENSE #5 — Rate Limiting
 // ============================================================
 const chatLimiter = rateLimit({
   windowMs: 60 * 1000,
@@ -61,7 +70,7 @@ function getFunnyReply() {
 }
 
 // ============================================================
-// DEFENSE #4 — Output Validation (catches if LLM still slipped)
+// DEFENSE #4 — Output Validation
 // ============================================================
 const OUTPUT_RED_FLAGS = [
   /ignore\s+(all\s+|previous\s+)?instructions/i,
@@ -100,7 +109,6 @@ app.get("/", (req, res) => {
 
 // ============================================================
 // RAG Context Retrieval
-// TOKEN SAVING: returns only relevant JSON, not entire knowledge base
 // ============================================================
 function retrieveContext(question) {
   const q = question.toLowerCase();
@@ -145,7 +153,6 @@ function retrieveContext(question) {
   if (chunks.length === 0)
     chunks.push(knowledgeBase.profile, knowledgeBase.self_introduction);
 
-  // TOKEN SAVING: compact JSON (no pretty-print spaces)
   return JSON.stringify(chunks);
 }
 
@@ -162,7 +169,7 @@ app.post("/chat", chatLimiter, async (req, res) => {
 
     const lowerMessage = message.toLowerCase().trim();
 
-    // ---- Greetings — no LLM call, zero tokens used ----
+    // ---- Greetings — no LLM call, zero tokens ----
     const greetings = ["hi", "hello", "hey", "hi vishwa", "hello vishwa", "hey vishwa", "good morning", "good afternoon", "good evening", "good night", "how are you", "how are you vishwa"];
     const fallbacks = ["thanks", "thank you", "ok", "okay", "bye", "see you"];
 
@@ -190,13 +197,19 @@ app.post("/chat", chatLimiter, async (req, res) => {
       return res.json({ reply: getFunnyReply() });
     }
 
-    console.log(`USER: ${message}`);
+    // ---- CACHE CHECK — return saved answer if same question asked before ----
+    const cacheKey = normalizeQuestion(message);
+    if (answerCache.has(cacheKey)) {
+      console.log(`USER: ${message} | ✅ CACHE HIT — NO LLM CALL`);
+      return res.json({ reply: answerCache.get(cacheKey) });
+    }
+
+    console.log(`USER: ${message} | CACHE MISS — calling LLM`);
 
     const context = retrieveContext(message);
     console.log(`Context length: ${context.length} chars`);
 
     // ---- DEFENSE #1 & #3: Tight system prompt + XML delimiter ----
-    // TOKEN SAVING: short, no-fluff system prompt
     const systemPrompt = `You are Vishwa Jaganathan. Answer ONLY using the context below. Rules:
 - First person only: "I am", "I built", "I learned". Never say "Vishwa is".
 - Short answers (1-3 sentences). Longer only if user asks for details.
@@ -217,7 +230,6 @@ Context: ${context}`;
         max_tokens: 120,
         messages: [
           { role: "system", content: systemPrompt },
-          // DEFENSE #1: XML tag marks user input as untrusted
           { role: "user", content: `<user_question>${message}</user_question>` },
         ],
       }),
@@ -244,6 +256,10 @@ Context: ${context}`;
       console.log("⚠️ SUSPICIOUS OUTPUT BLOCKED");
       return res.json({ reply: getFunnyReply() });
     }
+
+    // ---- SAVE TO CACHE for future same questions ----
+    answerCache.set(cacheKey, reply);
+    console.log(`✅ CACHED: "${cacheKey}" | Cache size: ${answerCache.size}`);
 
     console.log("REPLY SENT");
     res.json({ reply });
