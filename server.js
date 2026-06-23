@@ -292,7 +292,27 @@ Retrieved Context:
       }
     );
 
-    const data = await response.json();
+    const rawResponse = await response.text();
+
+console.log("=================================");
+console.log("SAMBANOVA RAW RESPONSE:");
+console.log(rawResponse);
+console.log("=================================");
+
+let data;
+
+try {
+  data = JSON.parse(rawResponse);
+} catch (error) {
+  console.log("=================================");
+  console.log("INVALID JSON RESPONSE");
+  console.log(rawResponse);
+  console.log("=================================");
+
+  return res.json({
+    reply: "SambaNova returned an invalid response."
+  });
+}
 
     if (data?.error?.type === "rate_limit_exceeded") {
       console.log("RATE LIMIT DETECTED");
