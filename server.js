@@ -274,7 +274,7 @@ Retrieved Context:
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "Llama-4-Maverick-17B-128E-Instruct",
+          model: "gemma-4-31B-it",
           temperature: 0.1,
           top_p: 0.1,
           max_tokens: 120,
