@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 const knowledgePath = __dirname;
 
 // ============================================================
-// CACHE
+// CACHEs
 // ============================================================
 const answerCache = new Map();
 
